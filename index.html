@@ -37,6 +37,18 @@
             height: 5px;
             background-color: green;
         }
+
+        #body, #url, #token, #result {
+            min-width: 350px;
+        }
+
+        #body, #result {
+            min-height: 200px;
+        }
+
+        #result {
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -72,11 +84,13 @@
     </code>
     <hr>
     <div class="form">
-        <input type="text" name="url" id="url" placeholder="URL Endpoint">
-        <input type="text" name="token" id="token" placeholder="Bearer Token Auth">
+        <label for="url">URL Endpoint</label>
+        <input type="text" name="url" id="url" placeholder="localhost:3000/api/resource/">
+        <label for="token">Bearer Token</label>
+        <input type="text" name="token" id="token" placeholder="eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJJb2tLbzF4aGxQaUh4RmJEUHJvVHFEVVpiLTFOZU9ISVdmLTVCY1djN2RNIn0">
         <div class="req-res">
-            <textarea name="body" id="body" cols="30" rows="10" placeholder="Request JSON Body"></textarea>
-            <textarea name="result" id="result" cols="30" rows="10" placeholder="Response Results" disabled></textarea>
+            <textarea name="body" id="body" placeholder="Request JSON Body"></textarea>
+            <textarea name="result" id="result" placeholder="Response Results" disabled></textarea>
         </div>
         <button type="button" id="submit" onclick="sendData()">Submit</button>
     </div>
