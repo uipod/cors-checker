@@ -62,6 +62,7 @@
         <li>Mengaktifkan CORS di service masing-masing.</li>
         <li>Allow Origin dari host ini: <b id="currentHost"></b></li>
         <li>Allow Origin dari host: <b>uipod.id</b></li>
+        <li>Allow Origin dari host: <b>localhost:3000</b> (untuk development frontend)</li>
         <li><strong>Pastikan setiap resource endpoint hanya menerima HTTP Method sesuai dengan yang ditangani. (Jika memungkinkan)</strong></li>
     </ol>
     <code id="response" lang="ruby">
@@ -69,7 +70,7 @@
     # Contoh penerapan CORS pada ruby:
     Rails.application.config.middleware.insert_before 0, Rack::Cors do
         allow do
-            origins 'localhost:*', '*'
+            origins 'localhost:3000', 'some.other.host'
 
             resource '/api/inventory/v1/vouchers', headers: :any, methods: %i[get post put patch delete]
             resource '/api/inventory/v1/vouchers/*', headers: :any, methods: %i[get post]
@@ -85,8 +86,8 @@
     <hr>
     <div class="form">
         <label for="url">URL Endpoint</label>
-        <input type="text" name="url" id="url" placeholder="localhost:3000/api/resource/">
-        <label for="token">Bearer Token</label>
+        <input type="text" name="url" id="url" placeholder="http://localhost:3000/api/resource/">
+        <label for="token">Bearer Token (wajib)</label>
         <input type="text" name="token" id="token" placeholder="eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJJb2tLbzF4aGxQaUh4RmJEUHJvVHFEVVpiLTFOZU9ISVdmLTVCY1djN2RNIn0">
         <div class="req-res">
             <textarea name="body" id="body" placeholder="Request JSON Body"></textarea>
