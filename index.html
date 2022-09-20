@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Cors Checker</title>
+    <style>
+        body {
+            padding: 0 20px 20px 20px;
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        input {
+            width: 300px;
+            height: 30px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100px;
+            height: 30px;
+            margin-top: 20px;
+        }
+
+        .req-res {
+            display: flex;
+            gap: 20px;
+        }
+
+        .turbo-progress-bar {
+            height: 5px;
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>API CORS Checker</h1>
+    <p><b>Checker for UIPOD Endpoints.</b></p>
+    <p>Masukkan URL Endpoint yang menggunakan method POST (seperti Create Products) dan masukkan JSON Body nya.</p>
+    <hr>
+    <p><i>Jika belum aktif atau ada response <b>failed to fetch</b>, pastikan untuk:</i></p>
+    <ol>
+        <li>Mengaktifkan CORS di service masing-masing.</li>
+        <li>Allow Origin dari host ini: <b id="currentHost"></b></li>
+        <li>Allow Origin dari host: <b>uipod.id</b></li>
+        <li><strong>Pastikan setiap resource endpoint hanya menerima HTTP Method sesuai dengan yang ditangani. (Jika memungkinkan)</strong></li>
+    </ol>
+    <code id="response" lang="ruby">
+    <pre>
+    # Contoh penerapan CORS pada ruby:
+    Rails.application.config.middleware.insert_before 0, Rack::Cors do
+        allow do
+            origins 'localhost:*', '*'
+
+            resource '/api/inventory/v1/vouchers', headers: :any, methods: %i[get post put patch delete]
+            resource '/api/inventory/v1/vouchers/*', headers: :any, methods: %i[get post]
+
+            resource '/api/inventory/v1/products', headers: :any, methods: %i[get post put patch delete]
+            resource '/api/inventory/v1/products/*', headers: :any, methods: %i[get post]
+
+            resource '/api/inventory/v1/reviews', headers: :any, methods: %i[get post]
+        end
+    end
+    </pre>
+    </code>
+    <hr>
+    <div class="form">
+        <input type="text" name="url" id="url" placeholder="URL Endpoint">
+        <input type="text" name="token" id="token" placeholder="Bearer Token Auth">
+        <div class="req-res">
+            <textarea name="body" id="body" cols="30" rows="10" placeholder="Request JSON Body"></textarea>
+            <textarea name="result" id="result" cols="30" rows="10" placeholder="Response Results" disabled></textarea>
+        </div>
+        <button type="button" id="submit" onclick="sendData()">Submit</button>
+    </div>
+
+    <script>
+        document.getElementById('currentHost').innerHTML = window.location.host;
+        function sendData() {
+            // Send data using fetch
+            // Alert if input is empty
+            if (document.getElementById('url').value == '' || document.getElementById('body').value == '') {
+                alert('URL Endpoint dan JSON Body tidak boleh kosong!');
+            } else {
+                // Show progress bar
+                document.getElementById('result').value = 'Loading...';
+                // Get data from input
+                const url = document.getElementById('url').value;
+                const token = document.getElementById('token').value;
+                const body = document.getElementById('body').value;
+                // Send data
+                fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: body,
+                    method: 'POST',
+                    mode: 'cors',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Show response
+                    document.getElementById('result').value = JSON.stringify(data, null, 2);
+                })
+                .catch((error) => {
+                    // Show error
+                    document.getElementById('result').value = error;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
